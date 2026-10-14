@@ -108,6 +108,26 @@ La última pasada de desarrollo (Chrome headless + CDP): carga en ~1,1 s,
 **cero errores de consola**, viajes a Sirio y α Centauri con panel correcto,
 vuelo WASD y toggles verificados con capturas.
 
+## Despliegue
+
+El sitio está en producción en el servidor:
+**<http://212.227.41.107/milky-way/>** (también desde el índice de la raíz).
+Cada push a `main` que toque `index.html`, `css/`, `js/`, `vendor/`, `data/` o
+el propio despliegue dispara el workflow `.github/workflows/deploy.yml`, que
+ejecuta el mismo `scripts/deploy.sh` que en local: sube todo por ssh,
+intercambia el directorio de forma atómica (el sitio nunca queda a medias) y
+comprueba la URL pública.
+
+- Config local en `.env` (gitignored; copia `.env.example`). En local el acceso
+  al VPS es el helper del escritorio (`VPS_SSH="bash ~/Desktop/vps.sh"`); en CI
+  los valores y la clave ssh vienen de los secrets del repo (`VPS_HOST`,
+  `VPS_USER`, `VPS_SSH_PORT`, `VPS_DEPLOY_PATH`, `VPS_SSH_KEY`, `SITE_URL`),
+  con el host key fijado en `.github/known_hosts`.
+- `scripts/deploy.sh --dry-run` lista lo que viajaría sin tocar nada. Los
+  catálogos crudos (`data/raw/`) no se suben: solo los binarios de `data/`.
+- En el VPS, nginx sirve el alias `/milky-way/` sobre `/var/www/html/milky-way/`
+  (bloque en `sites-enabled/discord-jcd`).
+
 ## Créditos de datos
 
 - [HYG Database v4.1](https://github.com/astronexus/HYG-Database) (astronexus),
