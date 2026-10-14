@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Vía Láctea a escala real en Three.js: vuelo libre entre 119.626 estrellas del catálogo HYG con posiciones reales, constelaciones en 3D, nebulosas y el disco galáctico.">
+<title>Vía Láctea · Three.js</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='28' fill='%239d8bff'/></svg>">
+<link rel="stylesheet" href="css/style.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "./vendor/three/build/three.module.js",
+    "three/addons/": "./vendor/three/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+
+<canvas id="scene"></canvas>
+<div id="labels"></div>
+
+<!-- ── Carga ─────────────────────────────────────────────── -->
+<div id="loading">
+  <div class="loader-core">
+    <div class="orbit-spinner"><i></i></div>
+    <h1>Vía Láctea</h1>
+    <p id="loading-msg">Preparando el motor…</p>
+    <div class="bar"><i id="loading-bar"></i></div>
+  </div>
+</div>
+
+<!-- ── Barra superior ────────────────────────────────────── -->
+<header id="topbar" class="glass">
+  <div class="brand">
+    <h1>Vía Láctea</h1>
+    <span id="mode-badge">catálogo HYG</span>
+  </div>
+
+  <div class="fly-controls">
+    <div class="speed-block">
+      <input id="speed" type="range" min="0" max="100" step="1" value="40" aria-label="Velocidad de vuelo">
+      <span id="speed-label">5 pc/s</span>
+    </div>
+
+    <div id="pos-readout" title="Posición respecto al Sol y al centro galáctico">—</div>
+  </div>
+</header>
+
+<!-- ── Panel de información ──────────────────────────────── -->
+<aside id="info" class="glass hidden" aria-live="polite">
+  <button id="info-close" class="icon-btn close" title="Cerrar (Esc)">×</button>
+  <div class="info-head">
+    <span id="info-dot" class="dot"></span>
+    <div>
+      <h2 id="info-name">—</h2>
+      <p id="info-type">—</p>
+    </div>
+  </div>
+
+  <p id="info-desc" class="info-desc"></p>
+
+  <div class="stats" id="info-stats"></div>
+
+  <div class="facts">
+    <h3>Curiosidades</h3>
+    <ul id="info-facts"></ul>
+  </div>
+
+  <div class="info-actions">
+    <button id="btn-travel" class="ghost-btn active">Viajar aquí</button>
+    <button id="btn-recenter" class="ghost-btn">Centrar</button>
+  </div>
+</aside>
+
+<!-- ── Selector rápido de estrellas ──────────────────────── -->
+<nav id="chips" aria-label="Estrellas destacadas"></nav>
+
+<!-- ── Interruptores ─────────────────────────────────────── -->
+<div id="toggles" class="glass">
+  <label class="sw"><input type="checkbox" id="tg-const"><span></span>Constelaciones</label>
+  <label class="sw"><input type="checkbox" id="tg-names" checked><span></span>Nombres</label>
+  <label class="sw"><input type="checkbox" id="tg-disk" checked><span></span>Disco galáctico</label>
+  <label class="sw"><input type="checkbox" id="tg-neb" checked><span></span>Nebulosas</label>
+  <label class="sw"><input type="checkbox" id="tg-bloom" checked><span></span>Brillo</label>
+</div>
+
+<!-- ── Ayuda / atajos ────────────────────────────────────── -->
+<button id="help-btn" class="icon-btn glass" title="Atajos de teclado">?</button>
+
+<div id="help" class="glass hidden">
+  <h3>Atajos</h3>
+  <ul>
+    <li><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> volar · <kbd>Q</kbd>/<kbd>E</kbd> subir/bajar</li>
+    <li><kbd>Shift</kbd> turbo (×6) · <kbd>←</kbd><kbd>→</kbd> velocidad</li>
+    <li>Arrastra para orbitar · rueda para acercar</li>
+    <li>Clic en una estrella para verla · doble clic para viajar</li>
+    <li><kbd>1</kbd>…<kbd>9</kbd> Sol, Sirio, Canopus…</li>
+    <li><kbd>C</kbd> constelaciones · <kbd>N</kbd> nombres</li>
+    <li><kbd>G</kbd> disco · <kbd>B</kbd> brillo · <kbd>Esc</kbd> soltar</li>
+    <li><kbd>H</kbd> esta ayuda</li>
+  </ul>
+</div>
+
+<div id="hint" class="hidden">WASD para volar · clic en una estrella para explorarla</div>
+
+<noscript><div class="noscript">Esta simulación necesita JavaScript.</div></noscript>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

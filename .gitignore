@@ -1,0 +1,12 @@
+# Config local de despliegue (credenciales del entorno); ver .env.example.
+.env
+
+# Catálogos crudos: solo se necesitan para regenerar los binarios
+# de data/ (ver scripts/fetch-data.sh y scripts/build-data.py).
+data/raw/
+
+# Por si alguien corre npm aquí: nada se instala en local.
+node_modules/
+
+# Artefactos de Python (scripts/build-data.py).
+__pycache__/
