@@ -75,8 +75,10 @@ fi
 P="$VPS_DEPLOY_PATH"
 
 echo "▸ subiendo…"
+# version.txt se genera EN EL SERVIDOR con la marca del despliegue: es lo que
+# sondea js/live.js para recargar las pestañas abiertas (ver README).
 tar_ship | run_remote \
-  "rm -rf '$P.tmp' && mkdir -p '$P.tmp' && tar -xzf - -C '$P.tmp' && chmod -R a+rX '$P.tmp' && echo '  recibido OK'"
+  "rm -rf '$P.tmp' && mkdir -p '$P.tmp' && tar -xzf - -C '$P.tmp' && date -u +%FT%TZ > '$P.tmp/version.txt' && chmod -R a+rX '$P.tmp' && echo '  recibido OK'"
 
 echo "▸ intercambiando…"
 run_remote \
@@ -86,7 +88,7 @@ run_remote \
 # (stars.bin pesa 3,3 MB, así que comprobamos un fichero pequeño de data/).
 if [ -n "${SITE_URL:-}" ]; then
   ok=true
-  for u in "$SITE_URL" "${SITE_URL}js/main.js" "${SITE_URL}vendor/three/build/three.module.js" "${SITE_URL}data/names.txt"; do
+  for u in "$SITE_URL" "${SITE_URL}js/main.js" "${SITE_URL}vendor/three/build/three.module.js" "${SITE_URL}data/names.txt" "${SITE_URL}version.txt"; do
     code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 25 "$u" || echo 000)
     printf '  %-64s %s\n' "$u" "$code"
     [ "$code" = "200" ] || ok=false

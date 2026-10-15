@@ -26,6 +26,11 @@ start.bat
 python -m http.server 8080     # → http://localhost:8080
 ```
 
+`./start.sh` (y `start.bat`) usa `scripts/dev-server.mjs` cuando hay Node: un
+servidor estático con Server-Sent Events que **recarga el navegador solo** al
+guardar cualquier fichero de `index.html`, `css/`, `js/`, `data/` o `vendor/`.
+También con `npm run dev`. Sin Node cae al servidor estático de Python.
+
 ## Controles
 
 | Tecla / ratón | Acción |
@@ -88,10 +93,11 @@ js/sky.js           puntos, líneas, nebulosas, etiquetas, picking, ficha
 js/shaders.js       shader único estrella real / campo procedural
 js/camera.js        rig de vuelo (flyTo sin follow: las estrellas no se mueven)
 js/ui.js            chips, panel, interruptores, ayuda
+js/live.js          recarga la pestaña cuando el VPS publica una versión nueva
 js/main.js          motor, WASD, selección, bucle
 js/noise.js         Perlin/fBm determinista
 data/               stars.bin (3,3 MB), líneas, tablas (generados)
-scripts/            fetch-data.sh + build-data.py
+scripts/            fetch-data.sh + build-data.py + dev-server.mjs (recarga en vivo)
 vendor/three/       Three.js r186 empaquetado (addons incluidos)
 ```
 
@@ -127,6 +133,13 @@ comprueba la URL pública.
   catálogos crudos (`data/raw/`) no se suben: solo los binarios de `data/`.
 - En el VPS, nginx sirve el alias `/milky-way/` sobre `/var/www/html/milky-way/`
   (bloque en `sites-enabled/discord-jcd`).
+- **Recarga en vivo**: `deploy.sh` escribe `version.txt` en el servidor (dentro
+  de la carpeta temporal, antes del intercambio atómico) y `js/live.js` lo
+  sondea cada 5 s; si cambió, la pestaña abierta se recarga sola, sin F5. En
+  local no hay `version.txt`, así que el sondeo no hace nada.
+- La checklist completa para dar de alta otro proyecto de este estilo está en
+  el README de `earth-threejs` (sección «Dar de alta un proyecto nuevo en el
+  VPS»).
 
 ## Créditos de datos
 
